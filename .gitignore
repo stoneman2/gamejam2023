@@ -1,2 +1,7 @@
 
 GGJ2023/Library/
+GGJ2023/Temp/UnityLockfile
+*.log
+GGJ2023/Temp/workerlic
+*.log
+GGJ2023/Logs/shadercompiler-UnityShaderCompiler.exe0.log
