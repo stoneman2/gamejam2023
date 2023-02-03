@@ -22,13 +22,18 @@ public class PlayerMovement : MonoBehaviour
 	public bool IsJumping { get; private set; }
 	public bool IsWallJumping { get; private set; }
 	public bool IsSliding { get; private set; }
+	public bool IsGrabbing { get; private set; }
+
+	public bool IsOnGround { get; private set; }
+	public bool IsOnWall { get; private set; }
+	public bool IsOnWallRight { get; private set; }
+	public bool IsOnWallLeft { get; private set; }
 
 	//Timers (also all fields, could be private and a method returning a bool could be used)
 	public float LastOnGroundTime { get; private set; }
 	public float LastOnWallTime { get; private set; }
 	public float LastOnWallRightTime { get; private set; }
 	public float LastOnWallLeftTime { get; private set; }
-
 	//Jump
 	private bool _isJumpCut;
 	private bool _isJumpFalling;
@@ -79,6 +84,7 @@ public class PlayerMovement : MonoBehaviour
 		#region INPUT HANDLER
 		_moveInput.x = Input.GetAxisRaw("Horizontal");
 		_moveInput.y = Input.GetAxisRaw("Vertical");
+		IsGrabbing = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 
 		if (_moveInput.x != 0)
 			CheckDirectionToFace(_moveInput.x > 0);
@@ -118,6 +124,28 @@ public class PlayerMovement : MonoBehaviour
 		}
 		#endregion
 
+		#region COLLISION CHECKS SETTERS
+		IsOnGround = LastOnGroundTime > 0;
+		IsOnWall = LastOnWallTime > 0;
+		IsOnWallRight = LastOnWallRightTime > 0;
+		IsOnWallLeft = LastOnWallLeftTime > 0;
+		#endregion
+
+		#region Grabbing
+		if (IsGrabbing)
+		{
+			if (!IsOnGround && !IsWallJumping)
+			{
+				if (IsOnWallLeft || IsOnWallRight )
+				{
+					RB.velocity = Vector2.zero;
+					IsJumping = false;
+				}
+			}
+		}
+		
+		#endregion
+
 		#region JUMP CHECKS
 		if (IsJumping && RB.velocity.y < 0)
 		{
@@ -132,7 +160,7 @@ public class PlayerMovement : MonoBehaviour
 			IsWallJumping = false;
 		}
 
-		if (LastOnGroundTime > 0 && !IsJumping && !IsWallJumping)
+		if (IsOnGround && !IsJumping && !IsWallJumping)
 		{
 			_isJumpCut = false;
 
@@ -157,14 +185,36 @@ public class PlayerMovement : MonoBehaviour
 			_isJumpCut = false;
 			_isJumpFalling = false;
 			_wallJumpStartTime = Time.time;
-			_lastWallJumpDir = (LastOnWallRightTime > 0) ? -1 : 1;
+			_lastWallJumpDir = (IsOnWallRight) ? -1 : 1;
 
 			WallJump(_lastWallJumpDir);
 		}
 		#endregion
 
+		#region WALLJUMP CHECK
+		if (IsWallJumping)
+		{
+			if (IsOnWallLeft && _lastWallJumpDir == -1)
+			{
+				IsWallJumping = false;
+				LastPressedJumpTime = 0;
+				LastOnWallLeftTime = 0;
+				LastOnWallRightTime = 0;
+				LastOnWallTime = 0;
+			}
+			else if (IsOnWallRight && _lastWallJumpDir == 1)
+			{
+				IsWallJumping = false;
+				LastPressedJumpTime = 0;
+				LastOnWallLeftTime = 0;
+				LastOnWallRightTime = 0;
+				LastOnWallTime = 0;
+			}
+		}
+		#endregion
+
 		#region SLIDE CHECKS
-		if (CanSlide() && ((LastOnWallLeftTime > 0 && _moveInput.x < 0) || (LastOnWallRightTime > 0 && _moveInput.x > 0)))
+		if (CanSlide() && ((IsOnWallLeft && _moveInput.x < 0) || (IsOnWallRight && _moveInput.x > 0)))
 			IsSliding = true;
 		else
 			IsSliding = false;
@@ -256,7 +306,7 @@ public class PlayerMovement : MonoBehaviour
 
 		//Gets an acceleration value based on if we are accelerating (includes turning) 
 		//or trying to decelerate (stop). As well as applying a multiplier if we're air borne.
-		if (LastOnGroundTime > 0)
+		if (IsOnGround)
 			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? Data.runAccelAmount : Data.runDeccelAmount;
 		else
 			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? Data.runAccelAmount * Data.accelInAir : Data.runDeccelAmount * Data.deccelInAir;
@@ -377,13 +427,18 @@ public class PlayerMovement : MonoBehaviour
 
 	private bool CanJump()
 	{
-		return LastOnGroundTime > 0 && !IsJumping;
+		return IsOnGround && !IsJumping;
+	}
+
+	private bool CanGrab()
+	{
+		return LastOnWallTime > 0 && LastOnGroundTime <= 0 && !IsJumping && !IsWallJumping;
 	}
 
 	private bool CanWallJump()
 	{
 		return LastPressedJumpTime > 0 && LastOnWallTime > 0 && LastOnGroundTime <= 0 && (!IsWallJumping ||
-			 (LastOnWallRightTime > 0 && _lastWallJumpDir == 1) || (LastOnWallLeftTime > 0 && _lastWallJumpDir == -1));
+			 (IsOnWallRight && _lastWallJumpDir == 1) || (LastOnWallLeftTime > 0 && _lastWallJumpDir == -1));
 	}
 
 	private bool CanJumpCut()
