@@ -58,7 +58,10 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\PlayerController\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\PlayerController\PlayerData.cs" />
-    <Compile Include="Assets\Scripts\CameraControl.cs" />
+    <Compile Include="Assets\Scripts\Camera\CameraControl.cs" />
+    <Compile Include="Assets\Scripts\Ladder\Ladder.cs" />
+    <Compile Include="Assets\Scripts\CheckPoint\CheckPoint.cs" />
+    <Compile Include="Assets\Scripts\DeadObsacle\DeadObsacle.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

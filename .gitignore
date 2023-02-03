@@ -5,6 +5,7 @@
 GGJ2023/[Ll]ibrary/
 GGJ2023/[Tt]emp/
 GGJ2023/[Oo]bj/
+GGJ2023/obj/
 GGJ2023/[Bb]uild/
 GGJ2023/[Bb]uilds/
 GGJ2023/[Ll]ogs/
@@ -70,3 +71,6 @@ GGJ2023/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
 # Temporary auto-generated Android Assets
 GGJ2023/[Aa]ssets/[Ss]treamingAssets/aa.meta
 GGJ2023/[Aa]ssets/[Ss]treamingAssets/aa/*
+*.cache
+*.cache
+*.cache
