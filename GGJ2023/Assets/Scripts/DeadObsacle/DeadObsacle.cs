@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class DeadObsacle : MonoBehaviour
 {
+    private Transform playerTransform;
+    private CheckPoint checkPoint;
     
     private void Start()
     {
-        
+        playerTransform = GetComponent<Transform>();
+        checkPoint = GetComponent<CheckPoint>();
     }
 
     private void Update()
@@ -19,7 +22,7 @@ public class DeadObsacle : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("DeadTrigger"))
         {
-            Debug.Log("You are dead");
+            playerTransform.position = checkPoint.checkPointPad;
         }
     }
 }
