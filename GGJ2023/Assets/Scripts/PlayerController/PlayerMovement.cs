@@ -42,6 +42,9 @@ public class PlayerMovement : MonoBehaviour
 	private float _wallJumpStartTime;
 	private int _lastWallJumpDir;
 
+	// Animator
+	private Animator _animator;
+
 	private Vector2 _moveInput;
 	public float LastPressedJumpTime { get; private set; }
 
@@ -69,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
 	{
 		SetGravityScale(Data.gravityScale);
 		IsFacingRight = true;
+		_animator = GetComponent<Animator>();
 	}
 
 	private void Update()
@@ -80,6 +84,11 @@ public class PlayerMovement : MonoBehaviour
 		LastOnWallLeftTime -= Time.deltaTime;
 
 		LastPressedJumpTime -= Time.deltaTime;
+		#endregion
+
+		#region ANIMATION HANDLER
+		_animator.SetBool("IsInAir",!IsOnGround);
+		_animator.SetBool("IsRunning", _moveInput.x != 0);
 		#endregion
 
 		#region INPUT HANDLER
@@ -423,7 +432,14 @@ public class PlayerMovement : MonoBehaviour
 	public void CheckDirectionToFace(bool isMovingRight)
 	{
 		if (isMovingRight != IsFacingRight)
-			Turn();
+		{
+			//stores scale and flips the player along the x axis, 
+			Vector3 turnScale = transform.localScale;
+			turnScale.x *= -1;
+			transform.localScale = turnScale;
+
+			IsFacingRight = !IsFacingRight;
+		}
 	}
 
 	private bool CanJump()
