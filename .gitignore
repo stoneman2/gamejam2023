@@ -18,6 +18,8 @@ GGJ2023/[Mm]emoryCaptures/
 # Recordings can get excessive in size
 GGJ2023/[Rr]ecordings/
 
+GGJ2023/Logs/
+
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
 
@@ -74,3 +76,4 @@ GGJ2023/[Aa]ssets/[Ss]treamingAssets/aa/*
 *.cache
 *.cache
 *.cache
+GGJ2023/Logs/shadercompiler-UnityShaderCompiler.exe0.log
