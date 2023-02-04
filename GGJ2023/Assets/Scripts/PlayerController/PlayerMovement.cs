@@ -57,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
 
 	[Header("Layers & Tags")]
 	[SerializeField] private LayerMask _groundLayer;
+	
 	#endregion
 
 	private void Awake()
