@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\DeadObsacle\DeadObsacle.cs" />
     <Compile Include="Assets\Scripts\CheckPoint\CheckPoint.cs" />
     <Compile Include="Assets\Asset\ParallaxCamera.cs" />
+    <Compile Include="Assets\Scripts\Rotate.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

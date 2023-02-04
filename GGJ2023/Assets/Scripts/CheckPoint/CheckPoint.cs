@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CheckPoint : MonoBehaviour
 {
+    public AudioSource audioSource;
+    public AudioClip audioClip;
     [SerializeField]public Vector3 checkPointPad;
 
     // Start is called before the first frame update
@@ -11,6 +13,7 @@ public class CheckPoint : MonoBehaviour
     {
         if(collision.CompareTag("CheckPoint"))
         {
+            audioSource.PlayOneShot(audioClip);
             checkPointPad = collision.transform.position;
         }
     }
