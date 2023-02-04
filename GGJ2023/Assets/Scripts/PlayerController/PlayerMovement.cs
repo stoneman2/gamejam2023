@@ -89,6 +89,7 @@ public class PlayerMovement : MonoBehaviour
 		#region ANIMATION HANDLER
 		_animator.SetBool("IsInAir",!IsOnGround);
 		_animator.SetBool("IsRunning", _moveInput.x != 0);
+		_animator.SetBool("IsGrabbing", (IsGrabbing && IsOnWall));
 		#endregion
 
 		#region INPUT HANDLER
@@ -146,10 +147,13 @@ public class PlayerMovement : MonoBehaviour
 		{
 			if (!IsOnGround && !IsWallJumping)
 			{
-				if (IsOnWallLeft || IsOnWallRight )
+				if ( ( IsOnWallLeft && !IsFacingRight ) || ( IsOnWallRight && IsFacingRight ) )
 				{
 					RB.velocity = Vector2.zero;
 					IsJumping = false;
+
+					// Stop player from being able to turn.
+					_moveInput.x = 0;
 				}
 			}
 		}
@@ -433,13 +437,21 @@ public class PlayerMovement : MonoBehaviour
 	{
 		if (isMovingRight != IsFacingRight)
 		{
-			//stores scale and flips the player along the x axis, 
-			Vector3 turnScale = transform.localScale;
-			turnScale.x *= -1;
-			transform.localScale = turnScale;
+			if (CanTurn())
+			{
+				//stores scale and flips the player along the x axis, 
+				Vector3 turnScale = transform.localScale;
+				turnScale.x *= -1;
+				transform.localScale = turnScale;
 
-			IsFacingRight = !IsFacingRight;
+				IsFacingRight = !IsFacingRight;
+			}
 		}
+	}
+
+	private bool CanTurn()
+	{
+		return !IsGrabbing;
 	}
 
 	private bool CanJump()
