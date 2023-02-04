@@ -90,6 +90,7 @@ public class PlayerMovement : MonoBehaviour
 		_animator.SetBool("IsInAir",!IsOnGround);
 		_animator.SetBool("IsRunning", _moveInput.x != 0);
 		_animator.SetBool("IsGrabbing", (IsGrabbing && IsOnWall));
+		_animator.SetBool("IsJumping", IsJumping);
 		#endregion
 
 		#region INPUT HANDLER
