@@ -1,0 +1,16 @@
+Credits:
+https://answers.unity.com/questions/551808/parallax-scrolling-using-orthographic-camera.html
+
+For the parallax effects in our game.
+
+Sound effects:
+Sound effects obtained from https://www.zapsplat.com
+Additional sound effects from https://www.zapsplat.com
+Music from https://www.zapsplat.com
+
+One Night Studio:
+Rachata Wongyai - Programming / Project Lead
+Natarat Apitanayosakorn - Game Design / Programming
+Chananya Treekhem - Art
+Parinya Daengsawat - Art
+Nada Ketmek - Art
